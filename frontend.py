@@ -18,6 +18,26 @@ Close program
 from tkinter import *
 import backend      # custom script
 
+
+def view_command():
+    books_list.delete(0, END)            # clear list box
+    for row in backend.view():
+        books_list.insert(END, row)      # iterate over tuples in results and appEND to list
+
+
+def search_command():
+    books_list.delete(0, END)            # clear list box
+    for row in backend.search(title_text.get(), author_text.get(), year_text.get(), isbn_text.get()):
+        books_list.insert(END, row)
+
+
+
+def add_command():
+    backend.insert(title_text.get(), author_text.get(), year_text.get(), isbn_text.get())
+    books_list.delete(0, END)
+    books_list.insert(END, (title_text.get(), author_text.get(), year_text.get(), isbn_text.get()))
+
+
 window = Tk()
 
 label1 = Label(window, text="Title")
@@ -59,13 +79,14 @@ book_list_scroll.grid(row=1, column=2, rowspan=6)
 books_list.configure(yscrollcommand=book_list_scroll.set)       # allow scroll bar to control list box
 book_list_scroll.configure(command=books_list.yview)            # scrollbar to vertically scroll book list contents
 
-view_all_button = Button(window, text="View all", width=12)
+view_all_button = Button(window, text="View all", width=12, command=view_command)   # no brackets, and for some reason not backend.view
+# view_all_button = Button(window, text="View all", width=12, command=backend.view)   # no brackets, and for some reason not backend.view
 view_all_button.grid(row=2, column=3)
 
-search_entry_button = Button(window, text="Search entry", width=12)
+search_entry_button = Button(window, text="Search entry", width=12, command=search_command)
 search_entry_button.grid(row=3, column=3)
 
-add_entry_button = Button(window, text="Add entry", width=12)
+add_entry_button = Button(window, text="Add entry", width=12, command=add_command)
 add_entry_button.grid(row=4, column=3)
 
 update_button = Button(window, text="Update", width=12)
@@ -77,5 +98,6 @@ delete_button.grid(row=6, column=3)
 close_button = Button(window, text="Close", width=12)
 close_button.grid(row=7, column=3)
 
+# TODO: case-insensitive search
 
 window.mainloop()

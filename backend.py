@@ -1,5 +1,6 @@
 import sqlite3
 
+
 def connect():      # connect to db
     connection = sqlite3.connect("books.db")
     cursor = connection.cursor()
@@ -8,6 +9,7 @@ def connect():      # connect to db
     cursor.execute(sql_string)   # table book; db books
     connection.commit()
     connection.close()
+
 
 def insert(title, author, year, isbn):
     connection = sqlite3.connect("books.db")
@@ -18,6 +20,7 @@ def insert(title, author, year, isbn):
     connection.commit()
     connection.close()
 
+
 def view():
     connection = sqlite3.connect("books.db")
     cursor = connection.cursor()
@@ -26,6 +29,7 @@ def view():
     rows = cursor.fetchall()
     connection.close()
     return rows
+
 
 def search(title="", author="", year="", isbn=""):              # provide empty strings as default values
     connection = sqlite3.connect("books.db")
@@ -46,6 +50,7 @@ def delete(id):             # provide empty strings as default values
     cursor.execute(sql_string)   # table book; db books
     connection.commit()
     connection.close()
+
 
 def update(id, author, title, year, isbn):
     connection = sqlite3.connect("books.db")

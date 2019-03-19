@@ -21,6 +21,9 @@ import backend      # custom script
 
 def get_selected_row(event):     # NB event parameter, for booklist
     global selected_row_tuple       # make available outside function - no need to use this function if no event
+    print(books_list.curselection())
+    if books_list.size() == 0:
+        return
     index = books_list.curselection()[0]    # get 1st part of <<ListboxSelect>> tuple (i.e. the index)
     selected_row_tuple = books_list.get(index)
     # print(index)              # diagnostic

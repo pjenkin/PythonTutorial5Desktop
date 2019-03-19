@@ -52,7 +52,7 @@ def delete(id):             # provide empty strings as default values
     connection.close()
 
 
-def update(id, author, title, year, isbn):
+def update(id, title, author, year, isbn):
     connection = sqlite3.connect("books.db")
     cursor = connection.cursor()
     sql_string = f"UPDATE book SET title=\'{title}\', author=\'{author}\', year={year}, isbn={isbn} WHERE id={id}"   # NULL for auto-increment'ing id - NB f prefix

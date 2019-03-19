@@ -19,6 +19,24 @@ from tkinter import *
 import backend      # custom script
 
 
+def get_selected_row(event):     # NB event parameter, for booklist
+    global selected_row_tuple       # make available outside function - no need to use this function if no event
+    index = books_list.curselection()[0]    # get 1st part of <<ListboxSelect>> tuple (i.e. the index)
+    selected_row_tuple = books_list.get(index)
+    # print(index)              # diagnostic
+    # print(selected_row_tuple)       # diagnostic
+
+    title_entry.delete(0, END)      # display selected book's details in entry boxes
+    title_entry.insert(END, selected_row_tuple[1])
+    author_entry.delete(0, END)
+    author_entry.insert(END, selected_row_tuple[2])
+    year_entry.delete(0, END)
+    year_entry.insert(END, selected_row_tuple[3])
+    isbn_entry.delete(0, END)
+    isbn_entry.insert(END, selected_row_tuple[4])
+
+
+
 def view_command():
     books_list.delete(0, END)            # clear list box
     for row in backend.view():
@@ -31,14 +49,23 @@ def search_command():
         books_list.insert(END, row)
 
 
-
 def add_command():
     backend.insert(title_text.get(), author_text.get(), year_text.get(), isbn_text.get())
     books_list.delete(0, END)
     books_list.insert(END, (title_text.get(), author_text.get(), year_text.get(), isbn_text.get()))
 
+def delete_command():
+    backend.delete(selected_row_tuple[0])   # get first (only?) element of selected row's tuple
+
+def update_command():
+    # backend.update(selected_row_tuple[0], selected_row_tuple[1], selected_row_tuple[2],
+    #                selected_row_tuple[3], selected_row_tuple[4])
+    backend.update(selected_row_tuple[0], title_text.get(), author_text.get(), year_text.get(), isbn_text.get())
 
 window = Tk()
+
+
+window.wm_title = "Book Catalogue"
 
 label1 = Label(window, text="Title")
 label1.grid(row=0, column=0)
@@ -73,6 +100,8 @@ isbn_entry.grid(row=1, column=3)
 books_list = Listbox(window, height=6, width=35)
 books_list.grid(row=2, column=0, rowspan=6, columnspan=2)       # NB rowspan, columnspan
 
+books_list.bind('<<ListboxSelect>>', get_selected_row)
+
 book_list_scroll = Scrollbar(window)
 book_list_scroll.grid(row=1, column=2, rowspan=6)
 
@@ -89,13 +118,13 @@ search_entry_button.grid(row=3, column=3)
 add_entry_button = Button(window, text="Add entry", width=12, command=add_command)
 add_entry_button.grid(row=4, column=3)
 
-update_button = Button(window, text="Update", width=12)
+update_button = Button(window, text="Update", width=12, command=update_command)
 update_button.grid(row=5, column=3)
 
-delete_button = Button(window, text="Delete", width=12)
+delete_button = Button(window, text="Delete", width=12, command=delete_command)
 delete_button.grid(row=6, column=3)
 
-close_button = Button(window, text="Close", width=12)
+close_button = Button(window, text="Close", width=12, command=window.destroy)
 close_button.grid(row=7, column=3)
 
 # TODO: case-insensitive search

@@ -20,24 +20,26 @@ import backend      # custom script
 
 
 def get_selected_row(event):     # NB event parameter, for booklist
-    global selected_row_tuple       # make available outside function - no need to use this function if no event
-    print(books_list.curselection())
-    if books_list.size() == 0:
-        return
-    index = books_list.curselection()[0]    # get 1st part of <<ListboxSelect>> tuple (i.e. the index)
-    selected_row_tuple = books_list.get(index)
-    # print(index)              # diagnostic
-    # print(selected_row_tuple)       # diagnostic
+    try:
+        global selected_row_tuple       # make available outside function - no need to use this function if no event
+        print(books_list.curselection())
+        # if books_list.size() == 0:
+        #     return
+        index = books_list.curselection()[0]    # get 1st part of <<ListboxSelect>> tuple (i.e. the index)
+        selected_row_tuple = books_list.get(index)
+        # print(index)              # diagnostic
+        # print(selected_row_tuple)       # diagnostic
 
-    title_entry.delete(0, END)      # display selected book's details in entry boxes
-    title_entry.insert(END, selected_row_tuple[1])
-    author_entry.delete(0, END)
-    author_entry.insert(END, selected_row_tuple[2])
-    year_entry.delete(0, END)
-    year_entry.insert(END, selected_row_tuple[3])
-    isbn_entry.delete(0, END)
-    isbn_entry.insert(END, selected_row_tuple[4])
-
+        title_entry.delete(0, END)      # display selected book's details in entry boxes
+        title_entry.insert(END, selected_row_tuple[1])
+        author_entry.delete(0, END)
+        author_entry.insert(END, selected_row_tuple[2])
+        year_entry.delete(0, END)
+        year_entry.insert(END, selected_row_tuple[3])
+        isbn_entry.delete(0, END)
+        isbn_entry.insert(END, selected_row_tuple[4])
+    except IndexError:
+        pass
 
 
 def view_command():

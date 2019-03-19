@@ -16,6 +16,7 @@ Close program
 
 
 from tkinter import *
+import backend      # custom script
 
 window = Tk()
 

@@ -19,7 +19,10 @@ class Account:
             file.write(str(self.balance))
 
 class CheckingAccount(Account):
-
+    ''' This class d'generate checking account objects '''
+    # the above is a docstring
+    type = 'checking-account'           # a class (not instance) variable
+    
     def __init__(self, filepath, fee):     # self passed even if sub-class
         Account.__init__(self, filepath)  # invoking base account
         self.fee = fee                  # NB instance variable from constructor into sub-class
@@ -34,11 +37,23 @@ account.withdraw(100)
 print(account.balance)
 account.commit()
 
-checking = CheckingAccount('balance.txt', 50)
-print(checking.balance)
-checking.deposit(100)
-checking.commit()
-print(checking.balance)
-checking.transfer(300)
-checking.commit()
-print(checking.balance)
+jack_checking = CheckingAccount('jack.txt', 50)
+print(jack_checking.balance)
+jack_checking.deposit(200)
+jack_checking.commit()
+print(jack_checking.balance)
+jack_checking.transfer(300)
+jack_checking.commit()
+print(jack_checking.balance)
+print(jack_checking.type)           # check class variable
+
+john_checking = CheckingAccount('john.txt', 20)
+print(john_checking.balance)
+john_checking.deposit(100)
+john_checking.commit()
+print(john_checking.balance)
+john_checking.transfer(200)
+john_checking.commit()
+print(john_checking.balance)
+print(john_checking.type)
+print(john_checking.__doc__)

@@ -18,7 +18,14 @@ class Account:
         with open(self.filepath, 'w') as file:
             file.write(str(self.balance))
 
+class CheckingAccount(Account):
 
+    def __init__(self, filepath, fee):     # self passed even if sub-class
+        Account.__init__(self, filepath)  # invoking base account
+        self.fee = fee                  # NB instance variable from constructor into sub-class
+
+    def transfer(self, amount):
+        self.balance = self.balance - amount - self.fee
 
 account = Account('balance.txt')         # instantiate
 print(account)  # diagnostic
@@ -27,3 +34,11 @@ account.withdraw(100)
 print(account.balance)
 account.commit()
 
+checking = CheckingAccount('balance.txt', 50)
+print(checking.balance)
+checking.deposit(100)
+checking.commit()
+print(checking.balance)
+checking.transfer(300)
+checking.commit()
+print(checking.balance)

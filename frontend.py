@@ -16,8 +16,10 @@ Close program
 
 
 from tkinter import *
-import backend      # custom script
+# import backend      # custom script
+from backend import Database
 
+database = Database()
 
 def get_selected_row(event):     # NB event parameter, for booklist
     try:
@@ -44,28 +46,28 @@ def get_selected_row(event):     # NB event parameter, for booklist
 
 def view_command():
     books_list.delete(0, END)            # clear list box
-    for row in backend.view():
+    for row in database.view():
         books_list.insert(END, row)      # iterate over tuples in results and appEND to list
 
 
 def search_command():
     books_list.delete(0, END)            # clear list box
-    for row in backend.search(title_text.get(), author_text.get(), year_text.get(), isbn_text.get()):
+    for row in database.search(title_text.get(), author_text.get(), year_text.get(), isbn_text.get()):
         books_list.insert(END, row)
 
 
 def add_command():
-    backend.insert(title_text.get(), author_text.get(), year_text.get(), isbn_text.get())
+    database.insert(title_text.get(), author_text.get(), year_text.get(), isbn_text.get())
     books_list.delete(0, END)
     books_list.insert(END, (title_text.get(), author_text.get(), year_text.get(), isbn_text.get()))
 
 def delete_command():
-    backend.delete(selected_row_tuple[0])   # get first (only?) element of selected row's tuple
+    database.delete(selected_row_tuple[0])   # get first (only?) element of selected row's tuple
 
 def update_command():
-    # backend.update(selected_row_tuple[0], selected_row_tuple[1], selected_row_tuple[2],
+    # database.update(selected_row_tuple[0], selected_row_tuple[1], selected_row_tuple[2],
     #                selected_row_tuple[3], selected_row_tuple[4])
-    backend.update(selected_row_tuple[0], title_text.get(), author_text.get(), year_text.get(), isbn_text.get())
+    database.update(selected_row_tuple[0], title_text.get(), author_text.get(), year_text.get(), isbn_text.get())
 
 window = Tk()
 
@@ -113,8 +115,8 @@ book_list_scroll.grid(row=1, column=2, rowspan=6)
 books_list.configure(yscrollcommand=book_list_scroll.set)       # allow scroll bar to control list box
 book_list_scroll.configure(command=books_list.yview)            # scrollbar to vertically scroll book list contents
 
-view_all_button = Button(window, text="View all", width=12, command=view_command)   # no brackets, and for some reason not backend.view
-# view_all_button = Button(window, text="View all", width=12, command=backend.view)   # no brackets, and for some reason not backend.view
+view_all_button = Button(window, text="View all", width=12, command=view_command)   # no brackets, and for some reason not database.view
+# view_all_button = Button(window, text="View all", width=12, command=database.view)   # no brackets, and for some reason not database.view
 view_all_button.grid(row=2, column=3)
 
 search_entry_button = Button(window, text="Search entry", width=12, command=search_command)
